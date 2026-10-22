@@ -1,0 +1,50 @@
+typedef union
+{
+	struct
+	{
+		uint8_t header;
+		uint8_t ID;
+		uint8_t dev_ID;
+		uint8_t pack_CNT;
+		uint16_t data_val;
+		struct
+		{
+			uint16_t X
+			int16_t Y
+		}pos_sph;
+		struct
+		{
+			int16_t X
+			int16_t  Y
+		}V_sph;
+		struct
+		{
+			uint16_t X
+			int16_t Y
+			uint16_t speed;
+			uint16_t range;
+			uint16_t MK;
+		}target_sph;
+Uint16_t Discrite;
+		uint8_t reserve[5];
+		uint8_t CRC;
+		uint8_t footer;
+	}d __attribute__((packed));
+	uint8_t data[33];
+}T_pecket;
+
+
+reserve[0]=0-> mode1
+reserve[0]=1-> mode2
+data_val=12 -> mode1 TX
+data_val=3 -> mode2 TX
+data_val -> ignored for RX interpretation (still included in CRC)
+V_sph.X	-> mode1 x
+V_sph.Y	-> mode1 y
+pos_sph.X -> mode2 x
+pos_sph.Y -> mode2 y
+reserve[1]=1 -> homming
+reserve[2]=1 -> trig
+reserve[3]=0..255 -> UI value
+reserve[4]=0 -> reserved
+CRC = XOR of data[1] through data[30]; data[31]=CRC; data[32]=0x5A
